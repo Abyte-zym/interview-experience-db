@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Java实习面经库 | 搜公司名看真实面试题</title>
+<meta name="description" content="阿里/字节/拼多多/美团/快手/京东/滴滴/蔚来/亚信——每家公司的Java实习面试题和追问，上千次沟通总结。">
+<meta name="keywords" content="Java面经,阿里面经,字节面经,拼多多面经,美团面经,快手面经,Java实习面经,面试题库">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.8;padding:20px}
+.container{max-width:900px;margin:0 auto}
+h1{font-size:2em;color:#38bdf8;text-align:center;margin:20px 0 5px}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:20px}
+.search-box{display:flex;gap:10px;margin:20px 0}
+.search-box input{flex:1;padding:14px 18px;border-radius:12px;border:2px solid #334155;background:#1e293b;color:#e2e8f0;font-size:1.1em}
+.search-box input:focus{outline:none;border-color:#38bdf8}
+.company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin:20px 0}
+.company-card{background:#1e293b;border-radius:12px;padding:16px;cursor:pointer;transition:.2s;border:2px solid transparent}
+.company-card:hover{border-color:#38bdf8;transform:translateY(-2px)}
+.company-card .name{font-size:1.2em;font-weight:bold;color:#facc15}
+.company-card .meta{color:#94a3b8;font-size:.85em;margin-top:4px}
+.experience-panel{display:none;background:#1e293b;border-radius:16px;padding:24px;margin:20px 0;border-left:4px solid #38bdf8}
+.experience-panel.active{display:block}
+.experience-panel h2{color:#38bdf8;margin-bottom:15px}
+.question-block{background:#0f172a;border-radius:8px;padding:16px;margin:12px 0;border:1px solid #334155}
+.question-block .q{color:#facc15;font-weight:bold;margin-bottom:8px}
+.question-block .a{color:#e2e8f0}
+.question-block .followup{color:#4ade80;font-size:.9em;margin-top:8px;padding:8px;background:rgba(74,222,128,.1);border-radius:6px}
+.donate{text-align:center;margin:30px 0;padding:20px;background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px;border:2px solid #facc15}
+.donate p{color:#facc15;margin-bottom:10px}
+.donate img{width:180px;border-radius:12px}
+.nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:20px 0}
+.nav a{background:#1e293b;color:#94a3b8;padding:6px 14px;border-radius:20px;text-decoration:none;font-size:.85em}
+.nav a:hover{background:#38bdf8;color:#0f172a}
+.stats{text-align:center;color:#94a3b8;margin:10px 0;font-size:.9em}
+.stats span{color:#facc15;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🗂️ Java实习面经库</h1>
+<p class="subtitle">搜公司名，看真实面试题和追问 — 上千次沟通总结</p>
+<p class="stats">已收录 <span>12</span> 家公司 · <span>60+</span> 道真题 · <span>30+</span> 组追问</p>
+
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="输入公司名搜索，如：拼多多、阿里、字节..." oninput="filterCompanies()">
+</div>
+
+<div class="nav">
+<a href="https://Abyte-zym.github.io/arsenal/">🎯 弹药库</a>
+<a href="https://Abyte-zym.github.io/arsenal/shop.html">🛒 装备商店</a>
+<a href="https://Abyte-zym.github.io/interview-simulator/">🎯 模拟面试</a>
+<a href="https://Abyte-zym.github.io/java-resume-builder/">📝 简历生成</a>
+</div>
+
+<div class="company-grid" id="companyGrid"></div>
+
+<div class="experience-panel" id="expPanel"></div>
+
+<div class="donate">
+<p>☕ 面经库帮到你了？赞赏支持持续更新更多公司面经</p>
+<img src="../mm_facetoface_collect_qrcode_1779427130944.png" alt="赞赏码">
+<p style="font-size:.8em;color:#64748b">微信扫码赞赏 · 你的支持让我跑更多面试</p>
+<p style="font-size:.8em;color:#64748b;margin-top:4px">📱 想解锁全部60+题+追问防御？</p>
+<a href="https://Abyte-zym.github.io/arsenal/shop.html" style="display:inline-block;background:#facc15;color:#0f172a;padding:8px 20px;border-radius:20px;text-decoration:none;font-weight:bold;margin-top:8px">🛒 ¥9.9 押题密卷 · ¥29.9 全家桶</a>
+</div>
+</div>
+
+<script>
+const companies = [
+{id:'alibaba',name:'阿里巴巴/蚂蚁/阿里云',meta:'灵犀互娱·菜鸟·高德·盒马',icon:'🔴'},
+{id:'bytedance',name:'字节跳动',meta:'飞书·懂车帝·剪映',icon:'🟣'},
+{id:'pdd',name:'拼多多',meta:'交易核心团队·服务端',icon:'🔴'},
+{id:'meituan',name:'美团',meta:'三快在线·测试开发',icon:'🟡'},
+{id:'kuaishou',name:'快手',meta:'算法引擎·商业化',icon:'🟠'},
+{id:'jd',name:'京东',meta:'京东健康·京东物流',icon:'🔴'},
+{id:'didi',name:'滴滴',meta:'后端研发·算法',icon:'🟠'},
+{id:'nio',name:'蔚来',meta:'数字座舱·测试开发',icon:'🔵'},
+{id:'kuaishou_ai',name:'昆仑万维',meta:'Prompt工程师·AI算法',icon:'🟣'},
+{id:'asiainfo',name:'亚信科技',meta:'通信软件·Java开发',icon:'🔵'},
+{id:'unicom',name:'中国联通',meta:'软件研究院·Offer',icon:'🔵'},
+{id:'mihoyo',name:'米哈游/游戏公司',meta:'多益网络·游戏开发',icon:'🟢'}
+];
+
+const experiences = {
+alibaba:{title:'🔴 阿里巴巴/蚂蚁/阿里云 Java实习面经',questions:[
+{q:'哈希表熟悉吗？可以如何实现？',a:'数组+链表，JDK8引入红黑树优化。put流程：计算hash→定位桶→链表插入→超过8转红黑树→扩容检查。',followup:'追问：开散列版本什么时候需要扩容？→ 当元素数量超过容量×负载因子(默认0.75)时触发扩容，扩容为原来的2倍。'},
+{q:'进程、线程、协程的区别？',a:'进程是资源分配的最小单位，线程是CPU调度的最小单位，协程是用户态的轻量级线程。线程切换需要内核态，协程在用户态切换，成本更低。',followup:'追问：高并发服务器内主从Reactor模型怎么实现？→ MainReactor负责accept连接，SubReactor负责读写事件，通过队列分发。'},
+{q:'TCP和UDP了解吗？UDP想实现安全通信需要增添什么？',a:'TCP面向连接、可靠传输、有流量控制和拥塞控制。UDP无连接、不可靠但快。UDP安全需要：①应用层ACK确认+重传 ②序列号防丢包 ③超时重传机制。',followup:'追问：HTTP有状态吗？Cookie和Session了解吗？→ HTTP无状态。Cookie存客户端，Session存服务端。分布式Session可用Redis集中存储。'},
+{q:'10万个用户数据，显示前100的排行榜怎么实现？',a:'用小顶堆（PriorityQueue），容量保持100。遍历10万数据，每个和堆顶比较，大于堆顶就替换并调整堆。时间复杂度O(N log K)，空间O(K)。',followup:'追问：如果实时更新排行榜怎么办？→ 用Redis的Sorted Set（ZSet），根据分数自动排序。score设为排名指标，zadd更新，zrevrange取Top100。'},
+{q:'单例模式有了解吗？怎么实现？',a:'双重检查锁定（DCL）：volatile修饰instance→第一次null检查→synchronized锁类→第二次null检查→new。volatile防止指令重排序导致的半初始化对象问题。',followup:'追问：静态内部类实现单例了解吗？→ 利用JVM类加载机制保证线程安全。静态内部类只在首次调用getInstance时加载，天生懒加载+线程安全。'}
+]},
+bytedance:{title:'🟣 字节跳动 Java实习面经',questions:[
+{q:'HashMap的put流程和扩容机制？',a:'先计算hash值，定位到数组槽位。如果空直接插入。如果已有元素则遍历链表/PutTree，找到相同key则替换。插入后检查size，超过阈值(容量×0.75)扩容为2倍。JDK8链表长度≥8转红黑树。',followup:'追问：为什么链表转红黑树的阈值是8？→ 泊松分布计算，链表长度达到8的概率极低(<千万分之一)。这是空间和时间的最优平衡点。'},
+{q:'ConcurrentHashMap怎么保证线程安全？',a:'JDK7：Segment分段锁。JDK8：CAS+synchronized，锁粒度更细——无hash冲突用CAS，有冲突synchronized锁链表头节点。扩容时支持多线程并发迁移。',followup:'追问：ConcurrentHashMap的get方法需要加锁吗？→ 不需要。因为Node的val和next都用volatile修饰，保证可见性。'},
+{q:'JVM内存区域划分？',a:'堆（对象实例，GC主要区域）、方法区（类信息/常量/静态变量，JDK8后叫元空间）、虚拟机栈（栈帧/局部变量表/操作数栈）、本地方法栈（Native方法）、程序计数器（当前线程执行位置）。',followup:'追问：堆和栈的区别？→ 堆是所有线程共享的，存对象实例；栈是线程私有的，存方法调用和局部变量。堆有GC，栈无——方法结束自动释放。'},
+{q:'MySQL索引底层结构？为什么用B+树不用红黑树？',a:'B+树是多路平衡搜索树。非叶子节点只存key不存data，叶子节点存完整数据+双向链表连接。B+树矮胖→IO次数少；叶子节点链表→范围查询快。红黑树太高→磁盘IO次数多→慢。',followup:'追问：联合索引的最左前缀原则是什么？→ 联合索引a_b_c，查询条件必须从a开始。where a=1能用索引，where b=2不行。因为索引先按a排序，再按b排序。'},
+{q:'Spring Boot自动配置原理？',a:'@SpringBootApplication里的@EnableAutoConfiguration通过AutoConfigurationImportSelector加载spring.factories文件中的自动配置类。这些类上有@Conditional条件注解，按需装配。',followup:'追问：如何自定义一个Starter？→ ①创建autoconfigure模块 ②编写配置类使用@Bean ③在spring.factories中注册 ④依赖方引入即可自动装配。'}
+]},
+pdd:{title:'🔴 拼多多 Java实习面经',questions:[
+{q:'怎么设计一个秒杀系统？',a:'前端：CDN+静态化+按钮防重复。网关层：令牌桶限流。服务层：Redis预减库存（Lua脚本原子操作）+ RocketMQ异步下单削峰。数据库层：读写分离+库存最终一致性。',followup:'追问：秒杀怎么防止超卖？→ Redis Lua脚本：if stock>0 then decr stock; return 1 else return 0 end。在Redis单线程内完成检查和扣减，保证原子性。'},
+{q:'分布式事务怎么处理？',a:'TCC（Try-Confirm-Cancel）：预留资源→确认提交→失败回滚。Seata AT模式：一阶段自动生成回滚SQL，二阶段提交或回滚。消息表+定时对账：写入本地消息表→MQ发送→消费方处理→标记完成。',followup:'追问：RocketMQ怎么保证消息不丢？→ 同步刷盘+主从同步+生产者确认(ack)+消费者手动确认。'},
+{q:'Redis缓存穿透、击穿、雪崩怎么解决？',a:'穿透：布隆过滤器过滤不存在key。击穿：热点key用互斥锁或逻辑过期。雪崩：过期时间加随机值(如base+random(0-300s))。',followup:'追问：布隆过滤器的原理？→ 多个hash函数对key散列到bit数组。查询时所有位都是1则可能存在，有0则一定不存在。存在误判率，但可以接受。'},
+{q:'数据库分库分表怎么做？',a:'垂直拆分：按业务模块（用户/订单/商品）分到不同的库。水平拆分：按用户ID取模(sharding)或按时间范围。中间件：ShardingSphere或MyCat。',followup:'追问：分库后跨库JOIN怎么解决？→ ①避免跨库JOIN，通过冗余字段或应用层组装 ②使用全局表广播 ③ES做搜索引擎聚合。'},
+{q:'RocketMQ和Kafka的对比？',a:'RocketMQ支持事务消息，更适合金融级场景。Kafka吞吐量更高（顺序写磁盘），适合日志/流处理。RocketMQ延时级别更灵活（18个级别），Kafka更适合大数据生态。',followup:'追问：RocketMQ的事务消息原理？→ 半消息→执行本地事务→提交/回滚→Broker定期回查本地事务状态。'}
+]},
+meituan:{title:'🟡 美团 Java实习面经',questions:[
+{q:'Spring IOC和AOP的理解？',a:'IOC（控制反转）：对象的创建和管理交给Spring容器，通过@Autowired自动注入。AOP（面向切面编程）：将横切关注点（日志/事务/权限）从业务代码中抽离出来，通过动态代理在方法前后织入。',followup:'追问：JDK动态代理和CGLIB代理的区别？→ JDK代理需要接口，生成Proxy类。CGLIB不需要接口，通过继承生成子类。Spring默认用JDK代理，无接口时用CGLIB。'},
+{q:'如何优化一条慢SQL？',a:'①用EXPLAIN看执行计划，检查type是否ALL(全表扫描)。②检查是否走索引：没走→加索引。③检查rows扫描数。④SELECT *改成SELECT具体字段。⑤避免函数操作、隐式类型转换。',followup:'追问：索引失效的场景有哪些？→ 左模糊LIKE、类型隐式转换、OR连接非索引列、联合索引不满足最左前缀、对索引列使用函数。'},
+{q:'Redis的持久化方式？',a:'RDB：定期快照，fork子进程写磁盘，恢复快但可能丢数据。AOF：追加每条写命令，数据安全但文件大。混合模式（Redis 4.0+）：RDB做全量+AOF做增量。',followup:'追问：AOF重写原理？→ fork子进程，基于当前数据状态生成最小命令集替代历史AOF文件。不阻塞主进程。'},
+{q:'线程池的核心参数和拒绝策略？',a:'核心线程数、最大线程数、存活时间、工作队列、拒绝策略。拒绝策略：AbortPolicy抛异常、CallerRunsPolicy调线程执行、DiscardPolicy丢弃、DiscardOldestPolicy丢弃最老的。',followup:'追问：核心线程数怎么设？→ IO密集型：2×CPU核数+1。CPU密集型：CPU核数+1。实际要根据压测数据调。'},
+{q:'TCP三次握手和四次挥手？',a:'三次握手：SYN→SYN+ACK→ACK。防止已失效的连接请求到达服务端导致资源浪费。四次挥手：FIN→ACK→FIN→ACK。因为TCP是全双工，双方都要关闭连接。',followup:'追问：为什么是三次握手不是两次？→ 两次握手无法防止失效连接：若第一个SYN延迟，服务端回复ACK即建立连接并分配资源，但客户端早已放弃，造成服务端资源浪费。'}
+]}
+};
+
+function filterCompanies(){
+const q=document.getElementById('searchInput').value.toLowerCase();
+const grid=document.getElementById('companyGrid');
+grid.innerHTML=companies.filter(c=>c.name.toLowerCase().includes(q)||c.meta.toLowerCase().includes(q)).map(c=>`<div class="company-card" onclick="showExp('${c.id}')"><div class="name">${c.icon} ${c.name}</div><div class="meta">${c.meta}</div></div>`).join('');
+if(!grid.innerHTML)grid.innerHTML='<p style="text-align:center;color:#94a3b8;grid-column:1/-1">没找到这家公司？赞赏后提交面经，我们补充 👇</p>';
+}
+
+function showExp(id){
+const e=experiences[id];
+if(!e)return;
+const panel=document.getElementById('expPanel');
+panel.innerHTML=`<h2>${e.title}</h2>${e.questions.map((q,i)=>`<div class="question-block"><div class="q">Q${i+1}：${q.q}</div><div class="a">💡 ${q.a}</div><div class="followup">🔍 ${q.followup}</div></div>`).join('')}`;
+panel.classList.add('active');
+panel.scrollIntoView({behavior:'smooth'});
+}
+
+filterCompanies();
+</script>
+</body>
+</html>
